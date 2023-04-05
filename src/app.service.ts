@@ -18,7 +18,7 @@ export class AppService {
    * @returns 
    */
   getHello(): string {
-    return 'Nest for 용택';
+    return 'Nest for 용택 ---';
   }
 }
 
