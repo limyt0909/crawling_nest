@@ -7,7 +7,9 @@ export class AppController {
 
   @Get('/')
   getHello(@Query() data) {
-    console.log(data.split(','))
+    console.log("originData : ", data)
+    const splitData = data.property_keys.split(',')
+    console.log("splitData : ", splitData)
     return data
   }
 }
