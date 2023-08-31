@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { AppService, scrapService } from './app.service';
+import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
@@ -14,13 +14,4 @@ export class AppController {
   }
 }
 
-@Controller()
-export class scrapController {
-  constructor(private readonly scrapService: scrapService) { }
-  @Get('/')
-  async getScrape(
-    @Query() data
-  ) {
-    return data
-  }
-}
+
