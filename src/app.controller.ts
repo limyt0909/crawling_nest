@@ -1,32 +1,32 @@
-import { Controller, Get, Param, Post, Query, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, Post, Query, Req, Res, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-
+import { join } from 'path';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { v4 as uuidv4 } from 'uuid';
+import { FileInterceptor } from '@nestjs/platform-express';
 @Controller()
 
 @ApiTags('default')
 
 export class AppController {
-  constructor(private readonly appService: AppService) { }
-  @ApiOperation({
-    summary: '파일업로드 여러개 테스트',
-    description: '파일업로드 여러개 테스트',
-  })
+  constructor(private readonly appService: AppService) {
+
+
+  }
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
       type: 'object',
       properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-          description: '파일1',
-        },
-        file2: {
-          type: 'string',
-          format: 'binary',
-          description: '파일2',
+        files: {
+          type: 'array',
+          items: {
+            type: 'string',
+            format: 'binary',
+          },
+          description: 'An array of files to upload.',
         },
       },
     },
@@ -34,15 +34,16 @@ export class AppController {
   @ApiParam({
     name: 'idx',
     example: '1',
-    description: '고유번호 ',
+    description: 'Unique identifier',
     required: true,
   })
-  @UseInterceptors(FilesInterceptor('files'))
-  @Post('/:idx')
-  async multipleUploaded(@Param("idx") idx: number, @UploadedFiles() file) {
-    console.log(file)
-    return idx
+  @UseInterceptors(FileInterceptor('files'))
+  @Post()
+  async uploadFiles(@UploadedFiles() files: any[], @Req() req: any) {
+    console.log(files);
+    console.log(req.body)
+    // Process uploaded files here
+
+    return 'Files uploaded successfully.';
   }
 }
-
-
