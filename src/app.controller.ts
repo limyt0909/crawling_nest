@@ -43,7 +43,6 @@ export class AppController {
   async uploadFiles(@UploadedFiles() files: any[], @Req() req: any) {
     console.log(files);
     console.log(req.body)
-    // Process uploaded files here
 
     return 'Files uploaded successfully.';
   }
